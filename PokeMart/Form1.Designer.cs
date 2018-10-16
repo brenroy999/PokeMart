@@ -62,7 +62,10 @@
             this.buttonCalculate = new System.Windows.Forms.Button();
             this.buttonPay = new System.Windows.Forms.Button();
             this.labelCalculation = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxTender = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelError = new System.Windows.Forms.Label();
+            this.buttonOrderRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.slot1Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slot2Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slot3Amount)).BeginInit();
@@ -383,12 +386,43 @@
             this.labelCalculation.Text = "Order Subtotal:\r\nTaxes:\r\n----------------------------------------\r\n\r\nTotal Price:" +
     "";
             // 
-            // textBox1
+            // textBoxTender
             // 
-            this.textBox1.Location = new System.Drawing.Point(78, 408);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(62, 20);
-            this.textBox1.TabIndex = 33;
+            this.textBoxTender.Location = new System.Drawing.Point(73, 408);
+            this.textBoxTender.Name = "textBoxTender";
+            this.textBoxTender.Size = new System.Drawing.Size(67, 20);
+            this.textBoxTender.TabIndex = 33;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 409);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 16);
+            this.label3.TabIndex = 34;
+            this.label3.Text = "Tender:";
+            // 
+            // labelError
+            // 
+            this.labelError.AutoSize = true;
+            this.labelError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelError.Location = new System.Drawing.Point(12, 436);
+            this.labelError.Name = "labelError";
+            this.labelError.Size = new System.Drawing.Size(242, 16);
+            this.labelError.TabIndex = 35;
+            this.labelError.Text = "Error: Please Use Numeric Values Only";
+            this.labelError.Visible = false;
+            // 
+            // buttonOrderRefresh
+            // 
+            this.buttonOrderRefresh.Location = new System.Drawing.Point(16, 511);
+            this.buttonOrderRefresh.Name = "buttonOrderRefresh";
+            this.buttonOrderRefresh.Size = new System.Drawing.Size(125, 24);
+            this.buttonOrderRefresh.TabIndex = 36;
+            this.buttonOrderRefresh.Text = "New Order";
+            this.buttonOrderRefresh.UseVisualStyleBackColor = true;
+            this.buttonOrderRefresh.Click += new System.EventHandler(this.buttonOrderRefresh_Click);
             // 
             // Form1
             // 
@@ -396,7 +430,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(584, 626);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.buttonOrderRefresh);
+            this.Controls.Add(this.labelError);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBoxTender);
             this.Controls.Add(this.labelCalculation);
             this.Controls.Add(this.buttonPay);
             this.Controls.Add(this.buttonCalculate);
@@ -488,7 +525,10 @@
         private System.Windows.Forms.Button buttonCalculate;
         private System.Windows.Forms.Button buttonPay;
         private System.Windows.Forms.Label labelCalculation;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxTender;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelError;
+        private System.Windows.Forms.Button buttonOrderRefresh;
     }
 }
 

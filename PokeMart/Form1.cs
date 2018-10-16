@@ -29,6 +29,8 @@ namespace PokeMart
         int slot12Price = 0;
         int slot13Price = 0;
 
+        bool priceCalculated = false;
+
         const double TAXES = 0.13;
 
         double subTotal, totalWithTax;
@@ -186,7 +188,7 @@ namespace PokeMart
                 debugLabel.Text = "Location Changed to Petalburg";
             }
 
-            if (martLocation.SelectedIndex == 2)
+            if (martLocation.SelectedIndex == 2) //Rustboro City
             {
                 //Items
                 labelSlot1.Text = "Poké Ball";
@@ -205,13 +207,13 @@ namespace PokeMart
                 slot4Amount.Value = 0;
                 slot4Price = 200;
 
-                labelSlot5.Text = "Awakening";
+                labelSlot5.Text = "Repeat Ball";
                 slot5Amount.Value = 0;
-                slot5Price = 200;
+                slot5Price = 1000;
 
-                labelSlot6.Text = "Great Ball";
+                labelSlot6.Text = "Timer Ball";
                 slot6Amount.Value = 0;
-                slot6Price = 600;
+                slot6Price = 1000;
 
                 labelSlot7.Text = "Super Potion";
                 slot7Amount.Value = 0;
@@ -237,10 +239,6 @@ namespace PokeMart
                 slot12Amount.Value = 0;
                 slot12Price = 550;
 
-                labelSlot13.Text = "Orange Mail";
-                slot13Amount.Value = 0;
-                slot13Price = 50;
-
                 labelSlot6.Visible = true;
                 slot6Amount.Visible = true;
 
@@ -262,8 +260,8 @@ namespace PokeMart
                 labelSlot12.Visible = true;
                 slot12Amount.Visible = true;
 
-                labelSlot13.Visible = true;
-                slot13Amount.Visible = true;
+                labelSlot13.Visible = false;
+                slot13Amount.Visible = false;
 
                 debugLabel.Text = "Location Changed to Rustboro";
             }
@@ -301,19 +299,21 @@ namespace PokeMart
 
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
+            priceCalculated = true; 
+
             double item1 = Convert.ToDouble(slot1Amount.Value) * (slot1Price);
             double item2 = Convert.ToDouble(slot2Amount.Value) * (slot2Price);
             double item3 = Convert.ToDouble(slot3Amount.Value) * (slot3Price);
-            double item4 = Convert.ToDouble(slot3Amount.Value) * (slot4Price);
-            double item5 = Convert.ToDouble(slot3Amount.Value) * (slot5Price);
-            double item6 = Convert.ToDouble(slot3Amount.Value) * (slot6Price);
-            double item7 = Convert.ToDouble(slot3Amount.Value) * (slot7Price);
-            double item8 = Convert.ToDouble(slot3Amount.Value) * (slot8Price);
-            double item9 = Convert.ToDouble(slot3Amount.Value) * (slot9Price);
-            double item10 = Convert.ToDouble(slot3Amount.Value) * (slot10Price);
-            double item11 = Convert.ToDouble(slot3Amount.Value) * (slot11Price);
-            double item12 = Convert.ToDouble(slot3Amount.Value) * (slot12Price);
-            double item13 = Convert.ToDouble(slot3Amount.Value) * (slot13Price);
+            double item4 = Convert.ToDouble(slot4Amount.Value) * (slot4Price);
+            double item5 = Convert.ToDouble(slot5Amount.Value) * (slot5Price);
+            double item6 = Convert.ToDouble(slot6Amount.Value) * (slot6Price);
+            double item7 = Convert.ToDouble(slot7Amount.Value) * (slot7Price);
+            double item8 = Convert.ToDouble(slot8Amount.Value) * (slot8Price);
+            double item9 = Convert.ToDouble(slot9Amount.Value) * (slot9Price);
+            double item10 = Convert.ToDouble(slot10Amount.Value) * (slot10Price);
+            double item11 = Convert.ToDouble(slot11Amount.Value) * (slot11Price);
+            double item12 = Convert.ToDouble(slot12Amount.Value) * (slot12Price);
+            double item13 = Convert.ToDouble(slot13Amount.Value) * (slot13Price);
 
 
             subTotal = (item1 + item2 + item3 + item4 + item5 + item6 + item7 + item8 + item9 + item10 + item11 + item12+ item13);
@@ -321,111 +321,193 @@ namespace PokeMart
             double amountOfTaxes = subTotal * TAXES;
             totalWithTax = subTotal + amountOfTaxes;
 
-            labelCalculation.Text = "Order Subtotal: " + subTotal +
-                                    "\nTaxes: " + amountOfTaxes +
+            labelCalculation.Text = "Order Subtotal: " + subTotal.ToString("#") +
+                                    "\nTaxes: " + amountOfTaxes.ToString("#") +
                                     "\n----------------------------------------" +
-                                    "\n\nTotal Price: " + (totalWithTax);
+                                    "\n\nTotal Price: " + (totalWithTax.ToString("#"));
+        }
+
+        private void buttonOrderRefresh_Click(object sender, EventArgs e)
+        {
+            Refresh();
+            slot1Amount.Value = 0;
+            slot2Amount.Value = 0;
+            slot3Amount.Value = 0;
+            slot4Amount.Value = 0;
+            slot5Amount.Value = 0;
+            slot6Amount.Value = 0;
+            slot7Amount.Value = 0;
+            slot8Amount.Value = 0;
+            slot9Amount.Value = 0;
+            slot10Amount.Value = 0;
+            slot11Amount.Value = 0;
+            slot12Amount.Value = 0;
+            slot13Amount.Value = 0;
+
+            textBoxTender.Text = "";
+
+            labelCalculation.Text = "Order Subtotal: " +
+                        "\nTaxes: " +
+                        "\n----------------------------------------" +
+                        "\n\nTotal Price: ";
         }
 
         private void buttonPay_Click(object sender, EventArgs e)
         {
-
-            this.Width = 600;
-            Refresh();
-
-            Graphics A = this.CreateGraphics();
-            SolidBrush blackBrush = new SolidBrush(Color.Black);
-            SolidBrush whiteBrush = new SolidBrush(Color.White);
-            Font receiptFont = new Font("Courier New", 10, FontStyle.Bold);
-
-            A.FillRectangle(blackBrush, 348, 84, 220, 390);
-            A.FillRectangle(whiteBrush, 349, 85, 218, 388);
-
-
-
-            int y = 90;
-
-            A.DrawString("PokéMart Online" +
-                       "\nOrdering Service" + "\n", receiptFont, blackBrush, 355, y);
-
-            y = 110;
-
-            if (slot1Amount.Value != 0)
+            if (priceCalculated == true)
             {
-                y += 20;
-                A.DrawString("\n" + labelSlot1.Text + " x" + slot1Amount.Value + " @ " + slot1Price, receiptFont, blackBrush, 355, y);
-            }
+                try //Detect Invalid Character Input
+                {
+                    //input
+                    double tender = Convert.ToInt32(textBoxTender.Text);
+                    double changeCustomer = tender - totalWithTax;
+                    double amountOfTaxes = totalWithTax - subTotal;
 
-            if (slot2Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot2.Text + " x" + slot2Amount.Value + " @ " + slot2Price, receiptFont, blackBrush, 355, y);
-            }
+                    if (changeCustomer >= 0)
+                    {
+                        labelError.Visible = false;
+                        this.Width = 600;
+                        Refresh();
 
-            if (slot3Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot3.Text + " x" + slot3Amount.Value + " @ " + slot3Price, receiptFont, blackBrush, 355, y);
-            }
+                        int y = 90;
 
-            if (slot4Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot4.Text + " x" + slot4Amount.Value + " @ " + slot4Price, receiptFont, blackBrush, 355, y);
-            }
+                        SoundPlayer printSound = new SoundPlayer(Properties.Resources.Receipt_Printer_SOUND_Effect);
+                        printSound.Play();
 
-            if (slot5Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot5.Text + " x" + slot5Amount.Value + " @ " + slot5Price, receiptFont, blackBrush, 355, y);
-            }
+                        Graphics A = this.CreateGraphics();
+                        SolidBrush blackBrush = new SolidBrush(Color.Black);
+                        SolidBrush whiteBrush = new SolidBrush(Color.White);
+                        Font receiptFont = new Font("Courier New", 10, FontStyle.Bold);
 
-            if (slot6Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot6.Text + " x" + slot6Amount.Value + " @ " + slot6Price, receiptFont, blackBrush, 355, y);
-            }
+                        A.FillRectangle(blackBrush, 348, 84, 220, 440);
+                        A.FillRectangle(whiteBrush, 349, 85, 218, 438);
 
-            if (slot7Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot7.Text + " x" + slot7Amount.Value + " @ " + slot7Price, receiptFont, blackBrush, 355, y);
-            }
+                        A.DrawString("PokéMart Online" +
+                                   "\nOrdering Service" + "\n", receiptFont, blackBrush, 355, y);
 
-            if (slot8Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot8.Text + " x" + slot8Amount.Value + " @ " + slot8Price, receiptFont, blackBrush, 355, y);
-            }
+                        y = 110;
 
-            if (slot9Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot9.Text + " x" + slot9Amount.Value + " @ " + slot9Price, receiptFont, blackBrush, 355, y);
-            }
+                        if (slot1Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot1.Text + " x" + slot1Amount.Value + " @ " + slot1Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
 
-            if (slot10Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot10.Text + " x" + slot10Amount.Value + " @ " + slot10Price, receiptFont, blackBrush, 355, y);
-            }
+                        if (slot2Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot2.Text + " x" + slot2Amount.Value + " @ " + slot2Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
 
-            if (slot11Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot11.Text + " x" + slot11Amount.Value + " @ " + slot11Price, receiptFont, blackBrush, 355, y);
-            }
+                        if (slot3Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot3.Text + " x" + slot3Amount.Value + " @ " + slot3Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
 
-            if (slot12Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot12.Text + " x" + slot12Amount.Value + " @ " + slot12Price, receiptFont, blackBrush, 355, y);
-            }
+                        if (slot4Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot4.Text + " x" + slot4Amount.Value + " @ " + slot4Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
 
-            if (slot13Amount.Value != 0)
-            {
-                y += 20;
-                A.DrawString("\n" + labelSlot13.Text + " x" + slot13Amount.Value + " @ " + slot13Price, receiptFont, blackBrush, 355, y);
+                        if (slot5Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot5.Text + " x" + slot5Amount.Value + " @ " + slot5Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot6Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot6.Text + " x" + slot6Amount.Value + " @ " + slot6Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot7Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot7.Text + " x" + slot7Amount.Value + " @ " + slot7Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot8Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot8.Text + " x" + slot8Amount.Value + " @ " + slot8Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot9Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot9.Text + " x" + slot9Amount.Value + " @ " + slot9Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot10Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot10.Text + " x" + slot10Amount.Value + " @ " + slot10Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot11Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot11.Text + " x" + slot11Amount.Value + " @ " + slot11Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot12Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot12.Text + " x" + slot12Amount.Value + " @ " + slot12Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        if (slot13Amount.Value != 0)
+                        {
+                            y += 20;
+                            A.DrawString("\n" + labelSlot13.Text + " x" + slot13Amount.Value + " @ " + slot13Price + " P", receiptFont, blackBrush, 355, y);
+                            Thread.Sleep(750);
+                        }
+
+                        y += 60;
+                        A.DrawString("\nTaxes: " + amountOfTaxes.ToString("#") + " P", receiptFont, blackBrush, 355, y);
+                        Thread.Sleep(750);
+
+                        y += 20;
+                        A.DrawString("\nTotal: " + totalWithTax.ToString("#") + " P", receiptFont, blackBrush, 355, y);
+                        Thread.Sleep(750);
+
+                        y += 20;
+                        A.DrawString("\nTender: " + tender.ToString("#") + " P", receiptFont, blackBrush, 355, y);
+                        Thread.Sleep(750);
+
+                        y += 20;
+                        A.DrawString("\nChange: " + changeCustomer.ToString("#") + " P", receiptFont, blackBrush, 355, y);
+
+                    }
+                    if (changeCustomer < 0)
+                    {
+                        labelError.Text = "Error: Not enough tender. Please enter a greater amount or reduce items in cart.";
+                        labelError.Visible = true;
+                        Refresh();
+                    }
+                }
+
+                catch
+                {
+                    labelError.Text = "Error: Please Use Numeric Characters";
+                    labelError.Visible = true;
+                    Refresh();
+                }
             }
         }
     }
